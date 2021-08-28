@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.lang.Math;
 
 class Matrix3x3 {
 
@@ -13,8 +14,9 @@ class Matrix3x3 {
 	}
 
 	public static Point3 times(Matrix3x3 matrix, Point3 point) {
-		double a = matrix.row1[0] * point.x + matrix.row1[1] * point.y + matrix.row1[2] * point.z;
-		double b = matrix.row2[0] * point.x + matrix.row2[1] * point.y + matrix.row2[2] * point.z;
+		double a = matrix.row1[0] * point.x + matrix.row1[1] * point.y + matrix.row1[2] * point.w;
+		double b = matrix.row2[0] * point.x + matrix.row2[1] * point.y + matrix.row2[2] * point.w;
+		double c = matrix.row3[0] * point.x + matrix.row3[1] * point.y + matrix.row3[2] * point.w;
 		return new Point3(a, b);
 	}
 
@@ -58,6 +60,29 @@ class Matrix3x3 {
 		double[] row3 = { g, h, i };
 		scan.close();
 		return new Matrix3x3(row1, row2, row3);
+	}
+
+	public static Matrix3x3 createTranslationalMatrix(double dx, double dy) {
+		double[] row1 = { 1.0, 0.0, dx };
+		double[] row2 = { 0.0, 1.0, dy };
+		double[] row3 = { 0.0, 0.0, 1.0 };
+		return new Matrix3x3(row1, row2, row3);
+	}
+
+	public static Matrix3x3 createRotationalMatrix(double angle) {
+		double rads = Math.PI / 180;
+		double[] row1 = { Math.cos(rads * angle), -Math.sin(rads * angle), 0.0 };
+		double[] row2 = { Math.sin(rads * angle), Math.cos(rads * angle), 0.0 };
+		double[] row3 = { 0.0, 0.0, 1.0 };
+		return new Matrix3x3(row1, row2, row3);
+	}
+
+	public static Matrix3x3 createScalingMatrix(double x, double y) {
+		double[] row1 = { x, 0.0, 0.0 };
+		double[] row2 = { 0.0, y, 0.0 };
+		double[] row3 = { 0.0, 0.0, 1.0 };
+		return new Matrix3x3(row1, row2, row3);
+
 	}
 
 	public static void main(String[] args) {
